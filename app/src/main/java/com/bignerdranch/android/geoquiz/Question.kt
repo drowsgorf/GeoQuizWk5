@@ -1,3 +1,4 @@
 import androidx.annotation.StringRes
 
-data class Question(@StringRes val textResId: Int, val answer: Boolean)
+//EXERCISE 2 -> ADDED var isAnswered BOOLEAN
+data class Question(@StringRes val textResId: Int, val answer: Boolean, var isAnswered: Boolean)

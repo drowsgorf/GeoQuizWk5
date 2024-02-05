@@ -13,8 +13,9 @@
     <string name="correct_toast">Correct!</string>
     <string name="incorrect_toast">Incorrect</string>
     <string name="next_button">Next</string>
-
-<!--    EXERCISE 3-->
     <string name="previous_button">Previous</string>
+
+<!--EXERCISE 3-->
+    <string name="finished_toast">You have Finished!</string>
 <!--    -->
 </resources>
