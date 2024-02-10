@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.make
@@ -18,24 +19,15 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-//    EXERCISE 2 -> ADDED isAnswered = false
-    private val questionBank = listOf(
-        Question(R.string.question_australia, true, false),
-        Question(R.string.question_oceans, true, false),
-        Question(R.string.question_africa, false, false),
-        Question(R.string.question_americas, false, false),
-        Question(R.string.question_asia, true, false)
-    )
-//
+    private val quizViewModel: QuizViewModel by viewModels()
 
     private fun updateQuestion() {
-        val questionTextResId = questionBank[currentIndex].textResId
+        val questionTextResId = quizViewModel.currentQuestionText
         binding.questionTextView.setText(questionTextResId)
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
-        val correctAnswer = questionBank[currentIndex].answer
+        val correctAnswer = quizViewModel.currentQuestionAnswer
 
         val messageResId = if (userAnswer == correctAnswer) {
             R.string.correct_toast
@@ -44,26 +36,21 @@ class MainActivity : AppCompatActivity() {
             R.string.incorrect_toast
         }
 
-//        EXERCISE 2
-        questionBank[currentIndex].isAnswered = true
+        quizViewModel.questionBank[quizViewModel.currentIndex].isAnswered = true
         disableAnswerBtns()
-//
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
 
-//        EXERCISE 3
         if (userAnswer == correctAnswer) {
             correctCount ++
         }
         answeredCount ++
 
         checkForCompletion(userAnswer, correctAnswer)
-//
     }
 
-//    EXERCISE 2
     private fun disableOrEnableBtns() {
-        if (questionBank[currentIndex].isAnswered) {
+        if (quizViewModel.questionBank[quizViewModel.currentIndex].isAnswered) {
             disableAnswerBtns()
         }
         else {
@@ -80,16 +67,14 @@ class MainActivity : AppCompatActivity() {
         binding.trueButton.isEnabled = true
         binding.falseButton.isEnabled = true
     }
-//
 
-//    EXERCISE 3
     private var answeredCount: Int = 0
     private var correctCount: Int = 0
     private var score: Double = 0.0
     private var scoreString: String = "Your score is: "
 
     private fun checkForCompletion(userAnswer: Boolean, correctAnswer: Boolean) {
-        if (answeredCount == questionBank.size) {
+        if (answeredCount == quizViewModel.questionBank.size) {
             score = correctCount/answeredCount.toDouble() * 100
             scoreString += score.toString()
             scoreString += "%"
@@ -105,9 +90,9 @@ class MainActivity : AppCompatActivity() {
         correctCount = 0
         score = 0.0
         scoreString = "You have finished! Your score is: "
-        currentIndex = 0
+        quizViewModel.currentIndex = 0
 
-        for(q in questionBank) {
+        for(q in quizViewModel.questionBank) {
             q.isAnswered = false
         }
 
@@ -116,13 +101,13 @@ class MainActivity : AppCompatActivity() {
     }
 //
 
-    private var currentIndex = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate(Bundle?) called")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        Log.d(TAG, "Got a QuizViewModel: $quizViewModel")
 
         binding.trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
@@ -133,35 +118,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.questionTextView.setOnClickListener { view: View ->
-            currentIndex = (currentIndex + 1) % questionBank.size
+            quizViewModel.moveToNext()
             updateQuestion()
 
-//            EXERCISE 2
             disableOrEnableBtns()
-//
         }
 
         binding.nextButton.setOnClickListener {
-            currentIndex = (currentIndex + 1) % questionBank.size
+            quizViewModel.moveToNext()
             updateQuestion()
 
-//            EXERCISE 2
             disableOrEnableBtns()
-//
         }
 
         binding.previousButton.setOnClickListener {
-            if (currentIndex == 0) {
-                currentIndex = questionBank.size - 1
-            }
-            else {
-                currentIndex = (currentIndex - 1) % questionBank.size
-            }
+            quizViewModel.moveToPrevious()
+
             updateQuestion()
 
-//            EXERCISE 2
             disableOrEnableBtns()
-//
         }
 
         updateQuestion()
