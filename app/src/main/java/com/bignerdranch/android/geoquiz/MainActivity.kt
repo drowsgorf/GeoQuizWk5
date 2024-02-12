@@ -36,70 +36,69 @@ class MainActivity : AppCompatActivity() {
             R.string.incorrect_toast
         }
 
-        quizViewModel.questionBank[quizViewModel.currentIndex].isAnswered = true
-        disableAnswerBtns()
+//        quizViewModel.questionBank[quizViewModel.currentIndex].isAnswered = true
+//        disableAnswerBtns()
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
 
-        if (userAnswer == correctAnswer) {
-            correctCount ++
-        }
-        answeredCount ++
-
-        checkForCompletion(userAnswer, correctAnswer)
-    }
-
-    private fun disableOrEnableBtns() {
-        if (quizViewModel.questionBank[quizViewModel.currentIndex].isAnswered) {
-            disableAnswerBtns()
-        }
-        else {
-            enableAnswerBtns()
-        }
-    }
-
-    private fun disableAnswerBtns() {
-        binding.trueButton.isEnabled = false
-        binding.falseButton.isEnabled = false
-    }
-
-    private fun enableAnswerBtns() {
-        binding.trueButton.isEnabled = true
-        binding.falseButton.isEnabled = true
-    }
-
-    private var answeredCount: Int = 0
-    private var correctCount: Int = 0
-    private var score: Double = 0.0
-    private var scoreString: String = "Your score is: "
-
-    private fun checkForCompletion(userAnswer: Boolean, correctAnswer: Boolean) {
-        if (answeredCount == quizViewModel.questionBank.size) {
-            score = correctCount/answeredCount.toDouble() * 100
-            scoreString += score.toString()
-            scoreString += "%"
-
-            Toast.makeText(this, scoreString, Toast.LENGTH_LONG).show()
-
-            resetQuiz()
-        }
-    }
-
-    private fun resetQuiz() {
-        answeredCount = 0
-        correctCount = 0
-        score = 0.0
-        scoreString = "You have finished! Your score is: "
-        quizViewModel.currentIndex = 0
-
-        for(q in quizViewModel.questionBank) {
-            q.isAnswered = false
-        }
-
-        enableAnswerBtns()
-        updateQuestion()
-    }
+//        if (userAnswer == correctAnswer) {
+//            correctCount ++
+//        }
+//        answeredCount ++
 //
+//        checkForCompletion(userAnswer, correctAnswer)
+    }
+
+//    private fun disableOrEnableBtns() {
+//        if (quizViewModel.questionBank[quizViewModel.currentIndex].isAnswered) {
+//            disableAnswerBtns()
+//        }
+//        else {
+//            enableAnswerBtns()
+//        }
+//    }
+
+//    private fun disableAnswerBtns() {
+//        binding.trueButton.isEnabled = false
+//        binding.falseButton.isEnabled = false
+//    }
+//
+//    private fun enableAnswerBtns() {
+//        binding.trueButton.isEnabled = true
+//        binding.falseButton.isEnabled = true
+//    }
+
+//    private var answeredCount: Int = 0
+//    private var correctCount: Int = 0
+//    private var score: Double = 0.0
+//    private var scoreString: String = "Your score is: "
+
+//    private fun checkForCompletion(userAnswer: Boolean, correctAnswer: Boolean) {
+//        if (answeredCount == quizViewModel.questionBank.size) {
+//            score = correctCount/answeredCount.toDouble() * 100
+//            scoreString += score.toString()
+//            scoreString += "%"
+//
+//            Toast.makeText(this, scoreString, Toast.LENGTH_LONG).show()
+//
+//            resetQuiz()
+//        }
+//    }
+//
+//    private fun resetQuiz() {
+//        answeredCount = 0
+//        correctCount = 0
+//        score = 0.0
+//        scoreString = "You have finished! Your score is: "
+//        quizViewModel.currentIndex = 0
+//
+//        for(q in quizViewModel.questionBank) {
+//            q.isAnswered = false
+//        }
+//
+//        enableAnswerBtns()
+//        updateQuestion()
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,14 +120,14 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.moveToNext()
             updateQuestion()
 
-            disableOrEnableBtns()
+//            disableOrEnableBtns()
         }
 
         binding.nextButton.setOnClickListener {
             quizViewModel.moveToNext()
             updateQuestion()
 
-            disableOrEnableBtns()
+//            disableOrEnableBtns()
         }
 
         binding.previousButton.setOnClickListener {
@@ -136,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 
             updateQuestion()
 
-            disableOrEnableBtns()
+//            disableOrEnableBtns()
         }
 
         updateQuestion()
